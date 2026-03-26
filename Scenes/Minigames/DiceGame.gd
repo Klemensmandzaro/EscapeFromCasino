@@ -160,6 +160,7 @@ func _on_dice_arena_roll_finished(result1: int, result2: int) -> void:
 
 
 func _on_restart_button_pressed():
+	GameManager.total_run_levels = 0
 	GameManager.reset_game()
 	SaveManager.save_game()
 	current_bet = 0
@@ -172,6 +173,7 @@ func _on_restart_button_pressed():
 
 func _on_menu_button_pressed() -> void:
 	GameManager.reset_game()
+	GameManager.total_run_levels = 0
 	SaveManager.save_game()
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 	

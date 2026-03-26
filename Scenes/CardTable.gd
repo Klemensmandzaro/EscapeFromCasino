@@ -526,11 +526,13 @@ func trigger_automatic_level_up() -> void:
 # --- 10. PRZYCISKI Z EKRANÓW (UI) ---
 # ==========================================
 func _on_restart_button_pressed():
+	GameManager.total_run_levels = 0
 	GameManager.reset_game()
 	SaveManager.save_game()
 	get_tree().change_scene_to_file("res://Scenes/Minigames/DiceGame.tscn")
 
 func _on_menu_button_pressed() -> void:
+	GameManager.total_run_levels = 0
 	GameManager.reset_game()
 	SaveManager.save_game()
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")

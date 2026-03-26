@@ -14,6 +14,7 @@ var magnet_level: int = 0
 var survival_level: int = 0
 var is_first_time_playing: bool = true
 
+var total_run_levels: int = 0
 
 var default_starting_money: int = 50
 var current_money: int = 50
@@ -69,6 +70,7 @@ func can_progress() -> bool:
 func next_level():
 	
 	current_level += 1
+	total_run_levels += 1
 	if current_level<=5:
 		level_changed.emit(current_level)
 	else:
@@ -95,7 +97,7 @@ func reset_game():
 	money_changed.emit(current_money)
 	
 func calculate_score(target_money_for_next_level: int) -> int:
-	var levels_passed = current_level - 1
+	var levels_passed = total_run_levels - 1
 	var level_score = levels_passed * 1000 # 1000 punktów za każdy ukończony poziom!
 	
 	# Obliczamy procent postępu (od 0.0 do 1.0) na podstawie naszego rekordu
@@ -112,6 +114,7 @@ func calculate_score(target_money_for_next_level: int) -> int:
 	# --- TWARDY RESET (NOWA GRA) ---
 func hard_reset():
 	vip_points = 0
+	total_run_levels = 0
 	upgrade_starting_money_level = 0
 	magnet_level = 0
 	survival_level = 0

@@ -58,6 +58,7 @@ func _ready():
 	GameManager.money_changed.connect(update_money_display)
 	GameManager.level_changed.connect(_on_level_changed) 
 	GameManager.level_max.connect(_on_level_max) 
+	GameManager.reset_game()
 	
 	update_money_display(GameManager.current_money)
 	update_level_display() 
@@ -398,12 +399,15 @@ func trigger_automatic_level_up() -> void:
 # --- PRZYCISKI Z PANELI ---
 # ==========================================
 func _on_restart_button_pressed():
+	GameManager.total_run_levels = 0
 	GameManager.reset_game()
 	get_tree().change_scene_to_file("res://Scenes/Minigames/DiceGame.tscn")
 
 func _on_menu_button_pressed() -> void:
+	GameManager.total_run_levels = 0
 	GameManager.reset_game()
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 
 func _on_next_level_button_pressed() -> void:
+	GameManager.total_run_levels = 0
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
