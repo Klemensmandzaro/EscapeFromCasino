@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://ci1w341062hbv"]
+
+[ext_resource type="Script" uid="uid://dijkxkm74u5ub" path="res://Die3D.gd" id="1_mnxnt"]
+[ext_resource type="ArrayMesh" uid="uid://ccud31olt010m" path="res://Graphics/kosteniunia.obj" id="2_hrx6y"]
+[ext_resource type="AudioStream" uid="uid://buy3nud20woyj" path="res://Audio/die-throw-3.ogg" id="3_em666"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hrx6y"]
+bounce = 0.7
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_auhlr"]
+
+[node name="Die3D" type="RigidBody3D" unique_id=89484865]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+physics_material_override = SubResource("PhysicsMaterial_hrx6y")
+contact_monitor = true
+max_contacts_reported = 3
+script = ExtResource("1_mnxnt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=721064679]
+transform = Transform3D(-8.7422775e-10, 0.02, -8.7422775e-10, 0, -8.7422775e-10, -0.02, -0.02, -8.7422775e-10, 3.821371e-17, 0, 0, 0)
+mesh = ExtResource("2_hrx6y")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1765346863]
+shape = SubResource("BoxShape3D_auhlr")
+
+[node name="HitSound" type="AudioStreamPlayer" parent="." unique_id=1184170724]
+stream = ExtResource("3_em666")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

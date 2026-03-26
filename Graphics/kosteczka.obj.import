@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c8rtir53ckyiq"
+path="res://.godot/imported/kosteczka.obj-9cfecff5b72c7d909c0cfaf1c54e039e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/kosteczka.obj-9cfecff5b72c7d909c0cfaf1c54e039e.mesh"]
+
+source_file="res://Graphics/kosteczka.obj"
+dest_files=["res://.godot/imported/kosteczka.obj-9cfecff5b72c7d909c0cfaf1c54e039e.mesh", "res://.godot/imported/kosteczka.obj-9cfecff5b72c7d909c0cfaf1c54e039e.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

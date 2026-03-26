@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://lps57c47nby8"]
+
+[ext_resource type="Script" uid="uid://disl3s4krx7q" path="res://Scenes/HUD.gd" id="1_sd512"]
+[ext_resource type="Texture2D" uid="uid://1ceg4nvak06u" path="res://Graphics/coin-removebg-preview.png" id="2_jo1ms"]
+
+[node name="HUD" type="Control" unique_id=73911387]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sd512")
+
+[node name="Button" type="Button" parent="." unique_id=1964696106]
+layout_mode = 1
+offset_right = 150.0
+offset_bottom = 97.0
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "50"
+icon = ExtResource("2_jo1ms")
+alignment = 0
+autowrap_trim_flags = 0
+expand_icon = true

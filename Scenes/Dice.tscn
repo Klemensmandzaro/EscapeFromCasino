@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://b273gkqwuy732"]
+
+[ext_resource type="Texture2D" uid="uid://bt7a40rkbf3wl" path="res://Graphics/kostka1.png" id="1_7wmyd"]
+[ext_resource type="Script" uid="uid://uwe7xfvtqtlb" path="res://Scenes/Dice.gd" id="1_d22q5"]
+[ext_resource type="Texture2D" uid="uid://uk4i5uxq4rb8" path="res://Graphics/kostka2.png" id="2_jwc25"]
+[ext_resource type="Texture2D" uid="uid://cudairreoewrk" path="res://Graphics/kostka3.png" id="3_a0ujp"]
+[ext_resource type="Texture2D" uid="uid://bhsw4qorlgwiw" path="res://Graphics/kostka4.png" id="4_jwepb"]
+[ext_resource type="Texture2D" uid="uid://qlv8r4cw3scl" path="res://Graphics/kostka5.png" id="5_jglba"]
+[ext_resource type="Texture2D" uid="uid://07xax5i3kf36" path="res://Graphics/kostka6.png" id="6_pabcj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cq7h8"]
+size = Vector2(6, 6)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cwike"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_7wmyd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_jwc25")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_a0ujp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_jwepb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_jglba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_pabcj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="Dice" type="RigidBody2D" unique_id=1982989496]
+script = ExtResource("1_d22q5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=791463353]
+position = Vector2(400, 250)
+scale = Vector2(10, 10)
+shape = SubResource("RectangleShape2D_cq7h8")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=755436792]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=567457669]
+position = Vector2(400, 250)
+sprite_frames = SubResource("SpriteFrames_cwike")
+frame_progress = 0.20625311

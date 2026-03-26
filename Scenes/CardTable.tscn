@@ -1,0 +1,356 @@
+[gd_scene format=3 uid="uid://cvyu6vmprat28"]
+
+[ext_resource type="Script" uid="uid://bryu5aeffl4g0" path="res://Scenes/CardTable.gd" id="1_kd0tn"]
+[ext_resource type="PackedScene" uid="uid://b6y3fhfqgccfa" path="res://Scenes/Deck.tscn" id="2_kunb6"]
+[ext_resource type="Texture2D" uid="uid://5etjrvka6m5i" path="res://Graphics/table_lvl1.jpg" id="3_jhitl"]
+[ext_resource type="Script" uid="uid://gycn8dt18oh7" path="res://Scenes/Minigames/texture_rect.gd" id="4_iniqo"]
+[ext_resource type="Texture2D" uid="uid://cnmwvtvm1kkcl" path="res://Graphics/token1.png" id="4_lmbmo"]
+[ext_resource type="Texture2D" uid="uid://cev5ugcqscu8a" path="res://Graphics/token5.png" id="5_8p3yo"]
+[ext_resource type="PackedScene" uid="uid://lps57c47nby8" path="res://Scenes/HUD.tscn" id="5_a58dd"]
+[ext_resource type="Texture2D" uid="uid://nkil3pqglsa3" path="res://Graphics/token10.png" id="6_8wlck"]
+[ext_resource type="Texture2D" uid="uid://d2ijdogid7wgx" path="res://Graphics/token50.png" id="7_j65oq"]
+[ext_resource type="Texture2D" uid="uid://bwsqrxr67265q" path="res://Graphics/token100.png" id="8_7l5py"]
+[ext_resource type="AudioStream" uid="uid://cn3g6e7knnebj" path="res://Audio/card-place-3.ogg" id="9_8p3yo"]
+[ext_resource type="AudioStream" uid="uid://wrjq84wpmkg8" path="res://Audio/chips-handle-3.ogg" id="10_j65oq"]
+[ext_resource type="Texture2D" uid="uid://8xwfduqakodu" path="res://Graphics/singlecoin.png" id="11_7l5py"]
+
+[sub_resource type="Curve" id="Curve_iniqo"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="CardTable" type="Control" unique_id=1848182715]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kd0tn")
+
+[node name="Deck" parent="." unique_id=1686531899 instance=ExtResource("2_kunb6")]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=744854147]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_jhitl")
+expand_mode = 1
+stretch_mode = 6
+script = ExtResource("4_iniqo")
+
+[node name="HUD" parent="." unique_id=73911387 instance=ExtResource("5_a58dd")]
+layout_mode = 1
+
+[node name="DrawButton" type="Button" parent="." unique_id=1148860089]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 496.0
+offset_right = 408.0
+offset_bottom = 632.0
+theme_override_font_sizes/font_size = 22
+text = "Ciągnij karte"
+
+[node name="ScoreButton" type="Button" parent="." unique_id=780893161]
+top_level = true
+light_mask = 512
+visibility_layer = 512
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -36.0
+offset_right = 36.0
+offset_bottom = 48.0
+grow_horizontal = 2
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+
+[node name="HitButton" type="Button" parent="." unique_id=353381616]
+layout_mode = 0
+offset_left = 144.0
+offset_top = 496.0
+offset_right = 272.0
+offset_bottom = 544.0
+theme_override_font_sizes/font_size = 22
+text = "Hit"
+
+[node name="StandButton" type="Button" parent="." unique_id=1277070028]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 496.0
+offset_right = 405.0
+offset_bottom = 544.0
+theme_override_font_sizes/font_size = 22
+text = "Stand"
+
+[node name="SplitCardsContainer" type="Node2D" parent="." unique_id=826642994]
+position = Vector2(200, 32)
+
+[node name="CardsContainer" type="Node2D" parent="." unique_id=1722814720]
+position = Vector2(224, 32)
+
+[node name="InsuranceButton" type="Button" parent="." unique_id=519733508]
+visible = false
+layout_mode = 0
+offset_left = 144.0
+offset_top = 544.0
+offset_right = 272.0
+offset_bottom = 592.0
+theme_override_font_sizes/font_size = 22
+text = "Insurance"
+
+[node name="SplitButton" type="Button" parent="." unique_id=1405695312]
+visible = false
+layout_mode = 0
+offset_left = 272.0
+offset_top = 544.0
+offset_right = 408.0
+offset_bottom = 600.0
+theme_override_font_sizes/font_size = 22
+text = "Split"
+
+[node name="DealerArea" type="Marker2D" parent="." unique_id=2118410869]
+position = Vector2(552, 184)
+
+[node name="CenterArea" type="Marker2D" parent="." unique_id=787477109]
+position = Vector2(552, 392)
+
+[node name="PlayerArea" type="Marker2D" parent="." unique_id=1929509923]
+position = Vector2(360, 392)
+
+[node name="SplitArea" type="Marker2D" parent="." unique_id=480876619]
+position = Vector2(744, 392)
+
+[node name="ChipContener" type="HBoxContainer" parent="." unique_id=376673596]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -168.0
+offset_top = -112.0
+offset_right = 184.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="Chip1" type="TextureButton" parent="ChipContener" unique_id=366792132]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("4_lmbmo")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="Chip2" type="TextureButton" parent="ChipContener" unique_id=2127717232]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("5_8p3yo")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="Chip3" type="TextureButton" parent="ChipContener" unique_id=1300838622]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("6_8wlck")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Chip4" type="TextureButton" parent="ChipContener" unique_id=73785028]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("7_j65oq")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="Chip5" type="TextureButton" parent="ChipContener" unique_id=242159502]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+texture_normal = ExtResource("8_7l5py")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="BetButton" type="Button" parent="." unique_id=1403561103]
+layout_mode = 0
+offset_left = 528.0
+offset_top = 472.0
+offset_right = 632.0
+offset_bottom = 520.0
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Zakład"
+
+[node name="DoubleButton" type="Button" parent="." unique_id=373190130]
+visible = false
+layout_mode = 0
+offset_left = 144.0
+offset_top = 592.0
+offset_right = 408.0
+offset_bottom = 631.0
+theme_override_font_sizes/font_size = 22
+text = "Double Down (x2)"
+
+[node name="CardSound" type="AudioStreamPlayer" parent="." unique_id=2016463379]
+stream = ExtResource("9_8p3yo")
+
+[node name="WinSound" type="AudioStreamPlayer" parent="." unique_id=1890106949]
+stream = ExtResource("10_j65oq")
+
+[node name="CoinFountain" type="CPUParticles2D" parent="." unique_id=2145665516]
+position = Vector2(568, 128)
+emitting = false
+amount = 30
+texture = ExtResource("11_7l5py")
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+emission_shape = 1
+emission_sphere_radius = 10.0
+direction = Vector2(0, -1)
+spread = 180.0
+initial_velocity_min = 400.0
+initial_velocity_max = 400.0
+angular_velocity_min = 360.0
+angular_velocity_max = 360.0
+damping_min = 50.0
+damping_max = 50.0
+scale_amount_curve = SubResource("Curve_iniqo")
+
+[node name="LevelButton" type="Button" parent="." unique_id=1947225588]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -8.0
+offset_bottom = 8.0
+grow_horizontal = 0
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Poziom"
+
+[node name="GameOverLayer" type="CanvasLayer" parent="." unique_id=799526825]
+layer = 10
+
+[node name="GameOverPanel" type="ColorRect" parent="GameOverLayer" unique_id=1052891572]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.654902)
+
+[node name="Label" type="Label" parent="GameOverLayer/GameOverPanel" unique_id=120532240]
+layout_mode = 0
+offset_top = 8.0
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_font_sizes/font_size = 48
+text = "Bankrupt!"
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 171
+
+[node name="ScoreLabel" type="Label" parent="GameOverLayer/GameOverPanel" unique_id=621188850]
+layout_mode = 1
+anchors_preset = -1
+anchor_bottom = 0.012
+offset_right = 1152.0
+offset_bottom = 552.224
+theme_override_font_sizes/font_size = 20
+text = "Twój wynik: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 171
+
+[node name="RestartButton" type="Button" parent="GameOverLayer/GameOverPanel" unique_id=367561226]
+layout_mode = 0
+offset_left = 640.0
+offset_top = 384.0
+offset_right = 832.0
+offset_bottom = 512.0
+theme_override_font_sizes/font_size = 30
+text = "Zagraj ponownie"
+autowrap_mode = 2
+
+[node name="MenuButton" type="Button" parent="GameOverLayer/GameOverPanel" unique_id=1305031967]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 384.0
+offset_right = 572.0
+offset_bottom = 512.0
+theme_override_font_sizes/font_size = 30
+text = "Menu Główne"
+autowrap_mode = 2
+
+[node name="LevelUpLayer" type="CanvasLayer" parent="." unique_id=1729203163]
+
+[node name="RegularLevelUpPanel" type="Panel" parent="LevelUpLayer" unique_id=1744969978]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="LevelUpLayer/RegularLevelUpPanel" unique_id=1155356301]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -68.0
+offset_right = 128.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 28
+text = "Gratulacje przechodzisz na kolejny poziom!!!"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="MazeCompletedPanel" type="Panel" parent="LevelUpLayer" unique_id=1663820295]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="LevelUpLayer/MazeCompletedPanel" unique_id=865031125]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = -108.0
+offset_right = 192.0
+offset_bottom = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 37
+text = " Zwycięstwo! Przeszedłeś Labirynt!"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="NextLevelButton" type="Button" parent="LevelUpLayer/MazeCompletedPanel" unique_id=2085817903]
+layout_mode = 0
+offset_left = 512.0
+offset_top = 384.0
+offset_right = 704.0
+offset_bottom = 512.0
+theme_override_font_sizes/font_size = 36
+text = "Wejdź Głębiej"
+autowrap_mode = 2

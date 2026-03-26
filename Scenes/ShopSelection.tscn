@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://bt4mrpxwfqrk5"]
+
+[ext_resource type="Script" uid="uid://djj14v4cgdkuj" path="res://Scenes/ShopSelection.gd" id="1_vhaqe"]
+[ext_resource type="Texture2D" uid="uid://b8tm1nsn3oqmc" path="res://Graphics/shop.jpg" id="2_y45pw"]
+[ext_resource type="Texture2D" uid="uid://ceb1c1gdghg03" path="res://Graphics/magnes-removebg-preview.png" id="3_dtb30"]
+[ext_resource type="Texture2D" uid="uid://bh6jv7ca5qine" path="res://Graphics/VIP-removebg-preview.png" id="3_f3spd"]
+[ext_resource type="Texture2D" uid="uid://1ceg4nvak06u" path="res://Graphics/coin-removebg-preview.png" id="4_0fyyw"]
+[ext_resource type="Texture2D" uid="uid://bcg287y7tp46p" path="res://Graphics/luck.png" id="4_hf4qf"]
+
+[node name="ShopSelection" type="Control" unique_id=1262664643]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vhaqe")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1460494919]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_y45pw")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VIPBadge" type="Button" parent="." unique_id=216923952]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -72.0
+offset_top = 32.0
+offset_right = 72.0
+offset_bottom = 102.0
+grow_horizontal = 2
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 26
+text = "999"
+icon = ExtResource("3_f3spd")
+expand_icon = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1971046126]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -520.0
+offset_right = 256.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MagnetButton" type="Button" parent="VBoxContainer" unique_id=1055419142]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_font_sizes/font_size = 22
+text = "Magnes na kasę (0/5) - 10 VIP"
+icon = ExtResource("3_dtb30")
+expand_icon = true
+
+[node name="MoneyButton" type="Button" parent="VBoxContainer" unique_id=2116332183]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("4_0fyyw")
+expand_icon = true
+
+[node name="SurvivalButton" type="Button" parent="VBoxContainer" unique_id=977349764]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("4_hf4qf")
+expand_icon = true
+
+[node name="BackButton" type="Button" parent="." unique_id=436635979]
+layout_mode = 0
+offset_left = 976.0
+offset_top = 568.0
+offset_right = 1136.0
+offset_bottom = 616.0
+text = "Powrót"
+
+[node name="InfoButton" type="Button" parent="." unique_id=1441958810]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 128.0
+offset_right = 1112.0
+offset_bottom = 256.0
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/MagnetButton" to="." method="_on_magnet_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MoneyButton" to="." method="_on_money_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SurvivalButton" to="." method="_on_survival_button_pressed"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

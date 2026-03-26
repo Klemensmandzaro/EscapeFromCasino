@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://ctdbrnqedyqh3"]
+
+[ext_resource type="Texture2D" uid="uid://cvfnxep1x07ur" path="res://Graphics/kostka-1.png" id="1_bpw8n"]
+[ext_resource type="Script" uid="uid://b7erxgr8hdog0" path="res://DicePhysics2D.gd" id="1_p8buo"]
+[ext_resource type="Texture2D" uid="uid://cjyqplmy4jdtb" path="res://Graphics/kostka-3.png" id="2_p8buo"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_mvj3p"]
+bounce = 0.7
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f58ym"]
+size = Vector2(22.84323, 21.966433)
+
+[node name="DicePhysics2D" type="Node2D" unique_id=132367637]
+position = Vector2(48, 40)
+script = ExtResource("1_p8buo")
+
+[node name="Die1_Rigid" type="RigidBody2D" parent="." unique_id=293295911]
+scale = Vector2(2, 2)
+physics_material_override = SubResource("PhysicsMaterial_mvj3p")
+gravity_scale = 0.0
+linear_damp = 4.0
+angular_damp = 5.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Die1_Rigid" unique_id=870422518]
+position = Vector2(372.81436, 187.33351)
+scale = Vector2(0.03515626, 0.037667423)
+texture = ExtResource("1_bpw8n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Die1_Rigid" unique_id=1370852163]
+position = Vector2(372.81427, 187.33347)
+scale = Vector2(1, 1.1)
+shape = SubResource("RectangleShape2D_f58ym")
+
+[node name="Die2_Rigid" type="RigidBody2D" parent="." unique_id=195479336]
+scale = Vector2(2, 2)
+physics_material_override = SubResource("PhysicsMaterial_mvj3p")
+gravity_scale = 0.0
+linear_damp = 4.0
+angular_damp = 5.0
+
+[node name="Sprite2D" type="Sprite2D" parent="Die2_Rigid" unique_id=2015255165]
+position = Vector2(177.46082, 187.33348)
+scale = Vector2(0.03491212, 0.035034187)
+texture = ExtResource("2_p8buo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Die2_Rigid" unique_id=1051790001]
+position = Vector2(177.46078, 187.33344)
+scale = Vector2(1, 1.1)
+shape = SubResource("RectangleShape2D_f58ym")

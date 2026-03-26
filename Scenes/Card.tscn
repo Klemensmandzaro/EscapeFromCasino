@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bkaeqq3550knv"]
+
+[ext_resource type="Texture2D" uid="uid://ym4sfagb1ljf" path="res://Graphics/Cards/cardClubs2.png" id="1_dd2wi"]
+[ext_resource type="Script" uid="uid://dihy2igo6gf8y" path="res://Scenes/Card.gd" id="2_hael8"]
+
+[node name="Card" type="Sprite2D" unique_id=19773865]
+texture = ExtResource("1_dd2wi")
+script = ExtResource("2_hael8")

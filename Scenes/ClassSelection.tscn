@@ -1,0 +1,145 @@
+[gd_scene format=3 uid="uid://v4imuusvhogb"]
+
+[ext_resource type="Script" uid="uid://dmaphyd6mo7fg" path="res://Scenes/ClassSelection.gd" id="1_7kr7b"]
+[ext_resource type="Texture2D" uid="uid://cvc22w8najks7" path="res://Graphics/tlopostaci.png" id="2_fbjiy"]
+[ext_resource type="Texture2D" uid="uid://btn5180mvh5cx" path="res://Graphics/bogacz-n-removebg-preview.png" id="3_fbjiy"]
+[ext_resource type="Texture2D" uid="uid://b7nqwi2jacdj7" path="res://Graphics/ryzykant-n-removebg-preview.png" id="4_4l3we"]
+[ext_resource type="Texture2D" uid="uid://bfdt41fnof6nq" path="res://Graphics/szuler-n-removebg-preview.png" id="5_yax2p"]
+
+[node name="ClassSelection" type="Control" unique_id=398935079]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7kr7b")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2032089394]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_fbjiy")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1796618177]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -450.0
+offset_top = -352.0
+offset_right = 450.0
+offset_bottom = -64.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1776343442]
+custom_minimum_size = Vector2(300, 400)
+layout_direction = 2
+layout_mode = 2
+alignment = 1
+
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=762690646]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Zaczynasz z większą ilością gotówki: 100
+(1 rzut w kieszeni)
+"
+icon = ExtResource("3_fbjiy")
+autowrap_mode = 2
+autowrap_trim_flags = 0
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Bogacz" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1032599361]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Bogacz
+"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer" unique_id=1570843948]
+custom_minimum_size = Vector2(300, 0)
+layout_direction = 2
+layout_mode = 2
+alignment = 1
+
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=2120905991]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Ma 20% szans na podwojenie wygranej w każdej grze
+"
+icon = ExtResource("4_4l3we")
+autowrap_mode = 2
+autowrap_trim_flags = 0
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Ryzykant" type="Button" parent="HBoxContainer/VBoxContainer2" unique_id=2042559688]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Ryzykant"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer" unique_id=1941067290]
+custom_minimum_size = Vector2(300, 0)
+layout_direction = 2
+layout_mode = 2
+alignment = 1
+
+[node name="Button2" type="Button" parent="HBoxContainer/VBoxContainer3" unique_id=346464174]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 22
+text = "Automatycznie dodaje +1 do każdego wyniku i wygrywa remisy"
+icon = ExtResource("5_yax2p")
+autowrap_mode = 2
+autowrap_trim_flags = 0
+icon_alignment = 1
+vertical_icon_alignment = 0
+expand_icon = true
+
+[node name="Szuler" type="Button" parent="HBoxContainer/VBoxContainer3" unique_id=207959940]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Szuler"
+
+[node name="Button" type="Button" parent="." unique_id=129714405]
+layout_mode = 0
+offset_left = 384.0
+offset_top = 56.0
+offset_right = 768.0
+offset_bottom = 144.0
+focus_mode = 0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 42
+text = "Wybierz Postać"
+
+[node name="Wroc" type="Button" parent="." unique_id=1668110869]
+layout_mode = 0
+offset_left = 1040.0
+offset_top = 576.0
+offset_right = 1136.0
+offset_bottom = 632.0
+text = "Powrót"
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Bogacz" to="." method="_on_bogacz_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer2/Ryzykant" to="." method="_on_ryzykant_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer3/Szuler" to="." method="_on_szuler_pressed"]
+[connection signal="pressed" from="Wroc" to="." method="_on_wroc_pressed"]
