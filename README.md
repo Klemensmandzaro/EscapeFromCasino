@@ -1,8 +1,11 @@
 GDD (Game Design Document) - Escape From Casino
 1. Informacje Ogólne
 Tytuł roboczy: Escape From Casino
+
 Silnik gry: Godot Engine 4.6.1
+
 Gatunek: Roguelite / Symulator Kasyna
+
 Platforma docelowa: PC (Windows)
 
 Target Audience: Gracze 18+ (motywy hazardowe), fani gier typu Roguelite (np. Balatro, Hades) oraz speedrunnerzy.
