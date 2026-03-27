@@ -5,6 +5,16 @@ signal money_changed(new_amount)
 signal level_changed(new_level)
 signal level_max(new_max)
 
+var music_player: AudioStreamPlayer
+var playlist: Array = [
+	preload("res://Audio/Music/denis-pavlov-music-jazz-podcast-night-relaxing-vibes-242886.mp3"), # Podmień na swoje nazwy plików!
+	preload("res://Audio/Music/denis-pavlov-music-podcast-jazz-easy-listening-music-219314.mp3"),
+	preload("res://Audio/Music/denis-pavlov-music-podcast-jazz-music-168726.mp3"),
+	preload("res://Audio/Music/surprising_media-cool-jazz-with-sax-1-481596.mp3"),
+	preload("res://Audio/Music/surprising_media-cool-jazz-with-sax-2-482959.mp3"),
+	preload("res://Audio/Music/surprising_media-smoked-glass-keys-piano-dark-jazz-504005.mp3")
+]
+
 # --- WALUTA I SKLEP ---
 var vip_points: int = 0  # <--- TA ZMIENNA MUSI TU BYĆ (bez wcięć)
 
@@ -25,7 +35,7 @@ var peak_money_this_level: int = 0 # Najwięcej gotówki, jaką mieliśmy na obe
 var player_class: int = 1
 
 # Ile pieniędzy gracz musi MIEĆ, aby przejść na kolejny poziom.
-var level_requirements = [0, 300, 500, 800, 1000, 1500]
+var level_requirements = [0, 100, 100, 100, 100, 100]
 
 # --- ZMIENNE ZEGARA W GAMEMANAGERZE ---
 var total_playtime: float = 0.0
@@ -34,6 +44,33 @@ var is_timer_running: bool = false
 func _process(delta: float) -> void:
 	if is_timer_running:
 		total_playtime += delta
+		
+func _ready():
+	# ==========================================
+	# --- TWORZENIE ODTWARZACZA MUZYKI ---
+	# ==========================================
+	music_player = AudioStreamPlayer.new()
+	
+	# Ustawiamy głośność na minus, żeby jazz był miłym tłem, a nie ryczał na całe kasyno
+	music_player.volume_db = -15.0 
+	
+	add_child(music_player)
+	
+	# Jak piosenka się skończy, odpal następną!
+	music_player.finished.connect(play_next_song)
+	
+	# Odpalamy pierwszą nutę od razu przy starcie gry
+	play_next_song()
+
+# --- FUNKCJA ZMIENIAJĄCA KAWAŁKI ---
+func play_next_song():
+	if playlist.is_empty():
+		return
+		
+	# Losujemy z listy
+	var random_index = randi() % playlist.size()
+	music_player.stream = playlist[random_index]
+	music_player.play()
 
 # ZMIANA: Ta funkcja teraz TYLKO odpala/wznawia stoper. Nie zeruje go!
 func resume_timer():
@@ -97,18 +134,21 @@ func reset_game():
 	money_changed.emit(current_money)
 	
 func calculate_score(target_money_for_next_level: int) -> int:
-	var levels_passed = total_run_levels - 1
+	var levels_passed = total_run_levels
+	if levels_passed == 0:
+		return -500
 	var level_score = levels_passed * 1000 # 1000 punktów za każdy ukończony poziom!
 	
 	# Obliczamy procent postępu (od 0.0 do 1.0) na podstawie naszego rekordu
 	var percentage = float(peak_money_this_level) / float(target_money_for_next_level)
+	print(percentage)
 	
 	# Zabezpieczenie (clamp), żeby procent nie przekroczył 1.0 (czyli 100%)
 	percentage = clamp(percentage, 0.0, 1.0)
 	
 	# Zamieniamy procent na punkty (np. 50% = 500 punktów)
 	var money_score = int(percentage * 1000) 
-	
+	print(level_score + money_score)
 	return level_score + money_score
 	
 	# --- TWARDY RESET (NOWA GRA) ---

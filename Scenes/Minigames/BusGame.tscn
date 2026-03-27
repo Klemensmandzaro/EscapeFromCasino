@@ -40,10 +40,10 @@ expand_mode = 1
 stretch_mode = 6
 script = ExtResource("3_eg0xi")
 
-[node name="Deck" parent="." unique_id=1686531899 instance=ExtResource("4_ko5e4")]
-
 [node name="HUD" parent="." unique_id=73911387 instance=ExtResource("5_yygxy")]
 layout_mode = 1
+
+[node name="Deck" parent="." unique_id=1686531899 instance=ExtResource("4_ko5e4")]
 
 [node name="StartCardPos" type="Marker2D" parent="." unique_id=1195031605]
 position = Vector2(352, 320)
@@ -250,11 +250,18 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="NextLevelButton" type="Button" parent="LevelUpLayer/MazeCompletedPanel" unique_id=1314249371]
-layout_mode = 0
-offset_left = 512.0
-offset_top = 384.0
-offset_right = 704.0
-offset_bottom = 512.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = 44.0
+offset_right = 96.0
+offset_bottom = 172.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_font_sizes/font_size = 36
 text = "Wejdź Głębiej"
 autowrap_mode = 2
@@ -335,3 +342,5 @@ focus_mode = 0
 mouse_filter = 2
 theme_override_font_sizes/font_size = 22
 text = "Zakład"
+
+[connection signal="pressed" from="LevelUpLayer/MazeCompletedPanel/NextLevelButton" to="." method="_on_next_level_button_pressed"]

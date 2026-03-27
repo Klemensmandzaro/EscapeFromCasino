@@ -8,7 +8,7 @@ extends Control
 @onready var start_button = $StartButton
 @onready var score_button = $ScoreButton 
 @onready var bet_button = $BetButton
-@onready var money_button = $HUD/Button 
+
 
 # NOWOŚĆ: EKRANY Z KOŚCI/BLACKJACKA
 @onready var level_button = $LevelButton
@@ -55,12 +55,12 @@ func _ready():
 	if next_level_button: next_level_button.pressed.connect(_on_next_level_button_pressed)
 	
 	# Podpinamy GameManagera (Kasa i Poziomy)
-	GameManager.money_changed.connect(update_money_display)
+	
 	GameManager.level_changed.connect(_on_level_changed) 
 	GameManager.level_max.connect(_on_level_max) 
 	GameManager.reset_game()
 	
-	update_money_display(GameManager.current_money)
+	
 	update_level_display() 
 	
 	if has_node("ChipContener/Chip1"): setup_chip($ChipContener/Chip1, 1)
@@ -100,8 +100,7 @@ func _on_chip_gui_input(event: InputEvent, value: int):
 func update_bet_display():
 	bet_button.text = "Stawka: " + str(current_bet)
 
-func update_money_display(amount: int):
-	money_button.text = "Konto: " + str(amount)
+
 
 
 # ==========================================
@@ -352,12 +351,15 @@ func bus_crash(message: String):
 				GameManager.money_changed.emit(GameManager.current_money) 
 				
 		if not saved_from_bankruptcy:
-			var target_money_to_level_up = GameManager.current_level * 100 
+			var target_money_to_level_up = GameManager.level_requirements[GameManager.current_level]
 			var final_score = GameManager.calculate_score(target_money_to_level_up)
 			var earned_vip = int(final_score / 100)
 			
+			
 			GameManager.vip_points += earned_vip
-			# SaveManager.save_game() # Jeśli tu wrzucimy Save, gracz będzie zbankrutowany po powrocie
+			if GameManager.vip_points<0:
+				GameManager.vip_points=0
+			SaveManager.save_game()
 			
 			score_label.text = "Twój Wynik: " + str(final_score) + " pkt!\nZdobywasz: " + str(earned_vip) + " Punktów VIP!"
 			game_over_panel.show()

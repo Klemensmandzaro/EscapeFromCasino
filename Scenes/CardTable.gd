@@ -422,6 +422,7 @@ func check_winner():
 	end_game(final_message)
 
 func get_hand_result_and_payout(p_score: int, d_score: int, hand_bet: int) -> String:
+	
 	if p_score > 21: 
 		return "FURA - Przegrana"
 	
@@ -488,12 +489,14 @@ func end_game(message: String):
 				GameManager.money_changed.emit(GameManager.current_money) 
 				
 		if not saved_from_bankruptcy:
-			var target_money_to_level_up = GameManager.current_level * 100 
+			var target_money_to_level_up = GameManager.level_requirements[GameManager.current_level]
 			var final_score = GameManager.calculate_score(target_money_to_level_up)
 			var earned_vip = int(final_score / 100)
 			
 			GameManager.vip_points += earned_vip
-			# SaveManager.save_game() 
+			if GameManager.vip_points<0:
+				GameManager.vip_points=0
+			SaveManager.save_game() 
 			
 			score_label.text = "Twój Wynik: " + str(final_score) + " pkt!\nZdobywasz: " + str(earned_vip) + " Punktów VIP!"
 			game_over_panel.show()

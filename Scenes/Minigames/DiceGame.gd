@@ -146,11 +146,13 @@ func _on_dice_arena_roll_finished(result1: int, result2: int) -> void:
 		
 		# Jeśli nikt nas nie uratował - GAME OVER
 		if not saved_from_bankruptcy:
-			var target_money_to_level_up = GameManager.current_level * 100 
+			var target_money_to_level_up = GameManager.level_requirements[GameManager.current_level]
 			var final_score = GameManager.calculate_score(target_money_to_level_up)
 			
 			var earned_vip = int(final_score / 100)
 			GameManager.vip_points += earned_vip
+			if GameManager.vip_points<0:
+				GameManager.vip_points=0
 			SaveManager.save_game()
 			
 			score_label.text = "Twój Wynik: " + str(final_score) + " pkt!\nZdobywasz: " + str(earned_vip) + " Punktów VIP!"
