@@ -1,6 +1,6 @@
 extends Control
 
-# --- WĘZŁY STOŁU ---
+
 @onready var deck = $Deck
 @onready var cards_container = $CardsContainer
 @onready var start_card_pos = $StartCardPos 
@@ -10,7 +10,7 @@ extends Control
 @onready var bet_button = $BetButton
 
 
-# NOWOŚĆ: EKRANY Z KOŚCI/BLACKJACKA
+
 @onready var level_button = $LevelButton
 
 @onready var game_over_panel = $GameOverLayer/GameOverPanel
@@ -23,16 +23,16 @@ extends Control
 @onready var next_level_button = $LevelUpLayer/MazeCompletedPanel/NextLevelButton 
 @onready var next_level_label = $LevelUpLayer/MazeCompletedPanel/Label 
 
-# UNIWERSALNE PRZYCISKI ETAPÓW
+
 @onready var btn1 = $Btn1
 @onready var btn2 = $Btn2
 @onready var btn3 = $Btn3
 @onready var btn4 = $Btn4
 
-# PRZYCISK: WYPŁATA (CASH OUT)
+
 @onready var btn_cashout = $BtnCashOut
 
-# --- ZMIENNE GRY ---
+
 var current_bet: int = 0
 var card_offset = Vector2(150, 0) 
 var drawn_cards = [] 
@@ -49,12 +49,12 @@ func _ready():
 	
 	if btn_cashout: btn_cashout.pressed.connect(_on_cashout_pressed)
 	
-	# Podpinamy przyciski z paneli!
+	
 	if restart_button: restart_button.pressed.connect(_on_restart_button_pressed)
 	if menu_button: menu_button.pressed.connect(_on_menu_button_pressed)
 	if next_level_button: next_level_button.pressed.connect(_on_next_level_button_pressed)
 	
-	# Podpinamy GameManagera (Kasa i Poziomy)
+	
 	
 	GameManager.level_changed.connect(_on_level_changed) 
 	GameManager.level_max.connect(_on_level_max) 
@@ -78,9 +78,7 @@ func _ready():
 	
 	score_button.text = "Postaw stawkę i kup bilet do Autobusu!"
 
-# ==========================================
-# --- SYSTEM ŻETONÓW I WYŚWIETLANIA ---
-# ==========================================
+
 func setup_chip(chip: TextureButton, value: int):
 	chip.gui_input.connect(_on_chip_gui_input.bind(value))
 
@@ -103,9 +101,7 @@ func update_bet_display():
 
 
 
-# ==========================================
-# --- GŁÓWNA MECHANIKA ---
-# ==========================================
+
 func _on_start_pressed():
 	if current_bet <= 0:
 		score_button.text = "Najpierw postaw stawkę!"
@@ -122,7 +118,7 @@ func _on_start_pressed():
 	start_button.hide()
 	prepare_stage_1()
 
-# --- FAZY GRY I KUSZENIE WYPŁATĄ ---
+
 func hide_all_stage_buttons():
 	btn1.hide(); btn2.hide(); btn3.hide(); btn4.hide()
 	if btn_cashout: btn_cashout.hide()
@@ -156,7 +152,7 @@ func prepare_stage_3():
 	
 	btn_cashout.text = "Wypłać: " + str(current_bet * 4) + " monet"
 	btn_cashout.show()
-
+ #Funkcja z AI
 func prepare_stage_4():
 	current_stage = 4
 	score_button.text = "OSTATNIA KARTA! ETAP 4: Zgadnij Znak!"
@@ -169,9 +165,7 @@ func prepare_stage_4():
 	btn_cashout.text = "Wypłać: " + str(current_bet * 6) + " monet"
 	btn_cashout.show()
 
-# ==========================================
-# --- LOGIKA WYPŁATY (CASH OUT) ---
-# ==========================================
+
 func _on_cashout_pressed():
 	var base_win = 0
 	
@@ -179,7 +173,7 @@ func _on_cashout_pressed():
 	elif current_stage == 3: base_win = current_bet * 4
 	elif current_stage == 4: base_win = current_bet * 6
 	
-	# Obliczamy bonusy (Ryzykant i Magnes)
+	
 	var payout_data = apply_win_bonuses(base_win)
 	var final_amount = payout_data[0]
 	var bonus_text = payout_data[1]
@@ -197,9 +191,7 @@ func _on_cashout_pressed():
 	start_button.text = "Nowy bilet"
 	start_button.show()
 
-# ==========================================
-# --- LOGIKA ZGADYWANIA (SERCE AUTOBUSU) ---
-# ==========================================
+# AI do szuler w tej funkcji
 func _on_btn_pressed(choice: int):
 	hide_all_stage_buttons() 
 	var new_card_data = draw_and_animate_card()
@@ -220,7 +212,7 @@ func _on_btn_pressed(choice: int):
 		
 		if choice == 1 and v2 > v1: win = true
 		elif choice == 2 and v2 < v1: win = true
-		elif v1 == v2 and GameManager.player_class == 3: # UMIEJĘTNOŚĆ: SZULER (Wygrywa remisy!)
+		elif v1 == v2 and GameManager.player_class == 3:
 			win = true
 			szuler_used = true
 		
@@ -241,7 +233,7 @@ func _on_btn_pressed(choice: int):
 		
 		if choice == 1 and v3 > min_v and v3 < max_v: win = true
 		elif choice == 2 and (v3 < min_v or v3 > max_v): win = true
-		elif (v3 == min_v or v3 == max_v) and GameManager.player_class == 3: # UMIEJĘTNOŚĆ: SZULER (Trafienie w słupek to wygrana!)
+		elif (v3 == min_v or v3 == max_v) and GameManager.player_class == 3: 
 			win = true
 			szuler_used = true
 		
@@ -261,19 +253,17 @@ func _on_btn_pressed(choice: int):
 		if win: win_bus()
 		else: bus_crash("A MIAŁEŚ TO W GARŚCI! Zły znak. Wypadasz na samej mecie!")
 
-# ==========================================
-# --- WYNIKI I POMOCNICE ---
-# ==========================================
+
 func apply_win_bonuses(base_amount: int) -> Array:
 	var final_amount = base_amount
 	var bonus_text = ""
 	
-	# UMIEJĘTNOŚĆ: RYZYKANT (20% na podwojenie puli)
+	
 	if GameManager.player_class == 2 and randf() <= 0.20:
 		final_amount += base_amount 
 		bonus_text += "\nRYZYKANT: Podwójna wygrana!"
 			
-	# ULEPSZENIE: MAGNES (Szansa na dodatkowe monety z mnożnikiem)
+	
 	if GameManager.magnet_level > 0 and randf() <= 0.30: 
 		var magnet_bonus = int(final_amount * (GameManager.magnet_level * 0.10))
 		if magnet_bonus > 0:
@@ -312,7 +302,7 @@ func get_card_value(card_data: Dictionary) -> int:
 func win_bus():
 	var base_win = current_bet * 10 
 	
-	# Bonusy do Jackpota
+	
 	var payout_data = apply_win_bonuses(base_win)
 	var final_amount = payout_data[0]
 	var bonus_text = payout_data[1]
@@ -329,19 +319,17 @@ func win_bus():
 	start_button.text = "Zagraj ponownie"
 	start_button.show()
 
-# ==========================================
-# --- BANKRUCTWO I SYSTEM POZIOMÓW ---
-# ==========================================
+
 func bus_crash(message: String):
 	score_button.text = message
 	current_bet = 0
 	update_bet_display() 
 	
-	# --- SPRAWDZANIE BANKRUCTWA I PRZETRWANIA ---
+	
 	if GameManager.current_money <= 0:
 		var saved_from_bankruptcy = false
 		
-		# Ulepszenie: Druga Szansa
+		
 		if GameManager.survival_level > 0:
 			var survival_chance = GameManager.survival_level * 0.10
 			if randf() <= survival_chance:
@@ -364,9 +352,9 @@ func bus_crash(message: String):
 			score_label.text = "Twój Wynik: " + str(final_score) + " pkt!\nZdobywasz: " + str(earned_vip) + " Punktów VIP!"
 			game_over_panel.show()
 			start_button.hide()
-			return # Kończymy, gracz zbankrutował
+			return 
 			
-	# Jeśli masz kasę (albo uratowało Cię Przetrwanie):
+	
 	start_button.text = "Kup nowy bilet"
 	start_button.show()
 
@@ -384,7 +372,7 @@ func _on_level_changed(new_level: int):
 func _on_level_max(level: int):
 	GameManager.stop_run_timer()
 	next_level_button.text="Przejdź do Menu Zwycięsco!"
-	# Formatujemy ładny czas! (wymaga funkcji w GameManagerze, tak jak gadaliśmy)
+	
 	var final_time = GameManager.get_formatted_time()
 	next_level_label.text = "Gratulacje!\nPrzeszedłeś całą grę!\nTwój czas to:\n" + final_time
 	
@@ -397,9 +385,7 @@ func trigger_automatic_level_up() -> void:
 	regular_panel.hide()
 	start_button.disabled = false
 
-# ==========================================
-# --- PRZYCISKI Z PANELI ---
-# ==========================================
+
 func _on_restart_button_pressed():
 	GameManager.total_run_levels = 0
 	GameManager.reset_game()

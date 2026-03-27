@@ -13,7 +13,6 @@ func roll_dices():
 
 func _process(_delta):
 	if checking_roll:
-		# Jeśli obie przestały się ruszać
 		if not die1.is_rolling and not die2.is_rolling:
 			checking_roll = false
 			var res1 = die1.get_top_face_value()

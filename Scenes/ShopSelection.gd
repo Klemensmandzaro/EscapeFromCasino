@@ -5,17 +5,14 @@ extends Control
 @onready var magnet_button = $VBoxContainer/MagnetButton
 @onready var survival_button = $VBoxContainer/SurvivalButton
 
-# Ten przycisk/label posłuży nam za wyświetlacz opisów!
+
 @onready var info_button = $InfoButton
 
-var base_cost: int = 10 # Koszt podstawowy (dla poziomu 0)
+var base_cost: int = 10 
 
 func _ready():
 	update_shop_ui()
 	
-	# ==========================================
-	# --- SYSTEM OPISÓW PO NAJECHANIU MYSZKĄ ---
-	# ==========================================
 	if money_button:
 		money_button.mouse_entered.connect(_show_info.bind("GRUBY PORTFEL\nRozpoczynasz każdą nową grę z dużo większą ilością gotówki na start. Nie musisz żebrać!"))
 		money_button.mouse_exited.connect(_hide_info)
@@ -28,18 +25,17 @@ func _ready():
 		survival_button.mouse_entered.connect(_show_info.bind("DRUGA SZANSA (PRZETRWANIE)\nSzansa (10% co każdy poziom), że przy bankructwie gra uratuje Cię przed porażką i da 10 monet na odbicie się!"))
 		survival_button.mouse_exited.connect(_hide_info)
 		
-	# Ustawiamy tekst domyślny
 	_hide_info()
 
-# --- FUNKCJA OBLICZAJĄCA KOSZT ---
+
 func get_cost(current_level: int) -> int:
 	return base_cost * (2 ** current_level)
 
-# --- ODŚWIEŻANIE EKRANU ---
+
 func update_shop_ui():
 	vip_badge.text = str(GameManager.vip_points)
 	
-	# 1. Gruby Portfel
+	
 	if GameManager.upgrade_starting_money_level < 5:
 		var cost = get_cost(GameManager.upgrade_starting_money_level)
 		money_button.text = "Gruby Portfel (" + str(GameManager.upgrade_starting_money_level) + "/5) - " + str(cost) + " VIP"
@@ -48,7 +44,7 @@ func update_shop_ui():
 		money_button.text = "Gruby Portfel (MAX)"
 		money_button.disabled = true 
 
-	# 2. Magnes na kasę
+	
 	if GameManager.magnet_level < 5:
 		var cost = get_cost(GameManager.magnet_level)
 		magnet_button.text = "Magnes na kasę (" + str(GameManager.magnet_level) + "/5) - " + str(cost) + " VIP"
@@ -57,7 +53,7 @@ func update_shop_ui():
 		magnet_button.text = "Magnes na kasę (MAX)"
 		magnet_button.disabled = true
 
-	# 3. Druga Szansa
+	
 	if GameManager.survival_level < 5:
 		var cost = get_cost(GameManager.survival_level)
 		survival_button.text = "Druga Szansa (" + str(GameManager.survival_level) + "/5) - " + str(cost) + " VIP"
@@ -66,7 +62,7 @@ func update_shop_ui():
 		survival_button.text = "Druga Szansa (MAX)"
 		survival_button.disabled = true
 
-# --- FUNKCJE KUPOWANIA ---
+
 func _on_money_button_pressed():
 	if GameManager.upgrade_starting_money_level < 5:
 		var cost = get_cost(GameManager.upgrade_starting_money_level)
@@ -94,13 +90,9 @@ func _on_survival_button_pressed():
 			update_shop_ui()
 			SaveManager.save_game()
 
-# --- POWRÓT ---
 func _on_back_button_pressed(): 
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
 
-# ==========================================
-# --- FUNKCJE POKAZYWANIA INFO ---
-# ==========================================
 func _show_info(description: String):
 	info_button.text = description
 

@@ -1,8 +1,6 @@
 extends Control
 
-# ==========================================
-# --- 1. WĘZŁY STOŁU I KART ---
-# ==========================================
+
 @onready var deck = $Deck
 @onready var draw_button = $DrawButton 
 @onready var hit_button = $HitButton
@@ -13,19 +11,17 @@ extends Control
 @onready var insurance_button = $InsuranceButton
 @onready var split_cards_container = $SplitCardsContainer
 
-# Pola do rozdawania (Marker2D)
+
 @onready var dealer_area = $DealerArea
 @onready var player_area = $PlayerArea
 @onready var split_area = $SplitArea
-@onready var center_area = $CenterArea # <--- DODANE DO ANIMACJI SPLITA (Marker na środku!)
+@onready var center_area = $CenterArea
 
 @onready var bet_button = $BetButton
 @onready var double_button = $DoubleButton
 @onready var level_button = $LevelButton
 
-# ==========================================
-# --- 2. WĘZŁY EKRANÓW (POPRAWIONE ŚCIEŻKI!) ---
-# ==========================================
+
 @onready var game_over_panel = $GameOverLayer/GameOverPanel
 @onready var score_label = $GameOverLayer/GameOverPanel/ScoreLabel
 @onready var restart_button = $GameOverLayer/GameOverPanel/RestartButton
@@ -35,9 +31,7 @@ extends Control
 @onready var maze_panel = $LevelUpLayer/MazeCompletedPanel
 @onready var next_level_button = $LevelUpLayer/MazeCompletedPanel/NextLevelButton 
 
-# ==========================================
-# --- 3. ZMIENNE GRY ---
-# ==========================================
+
 var double_hand_1 = false 
 var double_hand_2 = false 
 
@@ -49,7 +43,7 @@ var is_split_active = false
 var second_hand = [] 
 var active_hand = 1 
 
-# Zmienne do płynnego przesuwania rąk po stole
+
 var active_pos_1 = Vector2.ZERO
 var active_pos_2 = Vector2.ZERO
 
@@ -60,11 +54,9 @@ var dealer_hand = []
 
 var card_offset = Vector2(40, 0)
 
-# ==========================================
-# --- 4. START SKRYPTU ---
-# ==========================================
+
 func _ready():
-	# Podpinamy przyciski akcji
+	
 	draw_button.pressed.connect(_on_start_game_pressed)
 	hit_button.pressed.connect(_on_hit_pressed)
 	stand_button.pressed.connect(_on_stand_pressed)
@@ -73,12 +65,12 @@ func _ready():
 	double_button.pressed.connect(_on_double_pressed)
 	score_button.hide()
 	
-	# Podpinamy przyciski z ekranów!
+	
 	if restart_button: restart_button.pressed.connect(_on_restart_button_pressed)
 	if menu_button: menu_button.pressed.connect(_on_menu_button_pressed)
 	if next_level_button: next_level_button.pressed.connect(_on_next_level_button_pressed)
 	
-	# Sygnały GameManagera
+	
 	GameManager.level_changed.connect(_on_level_changed)
 	GameManager.level_max.connect(_on_level_max)
 	GameManager.reset_game()
@@ -86,14 +78,14 @@ func _ready():
 	update_bet_display()
 	update_level_display()
 	
-	# Podpinanie żetonów
+	
 	if has_node("ChipContener/Chip1"): setup_chip($ChipContener/Chip1, 1)
 	if has_node("ChipContener/Chip2"): setup_chip($ChipContener/Chip2, 5)
 	if has_node("ChipContener/Chip3"): setup_chip($ChipContener/Chip3, 10)
 	if has_node("ChipContener/Chip4"): setup_chip($ChipContener/Chip4, 50)
 	if has_node("ChipContener/Chip5"): setup_chip($ChipContener/Chip5, 100)
 	
-	# Resetowanie UI na starcie
+	
 	draw_button.text = "Rozdaj Karty!"
 	hit_button.hide()
 	stand_button.hide()
@@ -101,9 +93,7 @@ func _ready():
 	regular_panel.hide()
 	maze_panel.hide()
 
-# ==========================================
-# --- 5. SYSTEM ŻETONÓW I WYŚWIETLANIA KASY ---
-# ==========================================
+
 func setup_chip(chip: TextureButton, value: int):
 	chip.gui_input.connect(_on_chip_gui_input.bind(value))
 
@@ -130,9 +120,7 @@ func update_level_display():
 	else:
 		level_button.text = "POZIOM MAX!"
 
-# ==========================================
-# --- 6. GŁÓWNA PĘTLA GRY ---
-# ==========================================
+
 func _on_start_game_pressed():
 	score_button.show()
 	if current_bet <= 0:
@@ -144,7 +132,7 @@ func _on_start_game_pressed():
 		
 	GameManager.add_money(-current_bet)
 	
-	# Sprzątanie
+	
 	for child in cards_container.get_children(): child.queue_free()
 	for child in split_cards_container.get_children(): child.queue_free()
 	
@@ -169,7 +157,7 @@ func _on_start_game_pressed():
 	player_hand.clear()
 	dealer_hand.clear()
 	
-	# --- ROZDANIE POCZĄTKOWE NA ŚRODEK STOŁU ---
+	
 	active_pos_1 = center_area.global_position
 	
 	deal_card(dealer_hand, dealer_area.global_position, cards_container, false)
@@ -180,7 +168,7 @@ func _on_start_game_pressed():
 	check_available_actions() 
 	update_score_display()
 	
-	# Szybki Blackjack
+	
 	if calculate_score(player_hand) == 21:
 		GameManager.add_money(int(current_bet * 2.5)) 
 		if has_node("WinSound"): $WinSound.play()
@@ -244,9 +232,7 @@ func update_score_display():
 		
 	score_button.text = text
 
-# ==========================================
-# --- 7. AKCJE GRACZA ---
-# ==========================================
+
 func check_available_actions():
 	var current_hand = player_hand if active_hand == 1 else second_hand
 	var p_score = calculate_score(current_hand)
@@ -301,10 +287,10 @@ func _on_hit_pressed():
 		stand_button.hide()
 		if has_node("DoubleButton"): $DoubleButton.hide()
 		
-		# Czekamy pół sekundy, aż karta elegancko wyląduje na stole
+		
 		await get_tree().create_timer(0.5).timeout
 		
-		# Gra sama "klika" za nas przycisk Czekaj!
+	
 		_on_stand_pressed()
 
 func _on_stand_pressed():
@@ -387,7 +373,7 @@ func _on_split_pressed():
 	update_score_display()
 	check_available_actions()
 	
-	# Automatyczny stand na 1 ręce, jeśli od razu wpadło 21!
+	
 	if calculate_score(player_hand) == 21:
 		await get_tree().create_timer(0.5).timeout
 		_on_stand_pressed()
@@ -397,9 +383,7 @@ func _on_insurance_pressed():
 	insurance_button.hide()
 	score_button.text = "Ubezpieczenie kupione!\n" + score_button.text
 
-# ==========================================
-# --- 8. ZAKOŃCZENIE I WYPŁATY ZE SKLEPU ---
-# ==========================================
+
 func check_winner():
 	var d_score = calculate_score(dealer_hand)
 	var final_message = ""
@@ -430,13 +414,12 @@ func get_hand_result_and_payout(p_score: int, d_score: int, hand_bet: int) -> St
 		var win_amount = hand_bet * 2
 		var bonus_text = ""
 		
-		# UMIEJĘTNOŚĆ RYZYKANT
+		
 		if GameManager.player_class == 2:
 			if randf() <= 0.20:
 				win_amount += hand_bet 
 				bonus_text += "\nRYZYKANT: Podwójna wygrana!"
-				
-		# ULEPSZENIE: MAGNES 
+					
 		if GameManager.magnet_level > 0:
 			if randf() <= 0.30: 
 				var magnet_bonus = int(hand_bet * (GameManager.magnet_level * 0.10))
@@ -452,7 +435,7 @@ func get_hand_result_and_payout(p_score: int, d_score: int, hand_bet: int) -> St
 	if d_score > p_score: 
 		return "PRZEGRANA"
 		
-	if GameManager.player_class == 3: # UMIEJĘTNOŚĆ: SZULER
+	if GameManager.player_class == 3:
 		GameManager.add_money(hand_bet * 2) 
 		if has_node("WinSound"): $WinSound.play()
 		if has_node("CoinFountain"): $CoinFountain.restart()
@@ -476,7 +459,6 @@ func end_game(message: String):
 	current_bet = 0
 	update_bet_display()
 	
-	# SPRAWDZANIE BANKRUCTWA I PRZETRWANIA
 	if GameManager.current_money <= 0:
 		var saved_from_bankruptcy = false
 		
@@ -507,9 +489,7 @@ func end_game(message: String):
 	draw_button.show()
 	draw_button.disabled = false
 
-# ==========================================
-# --- 9. SYSTEM KAMPANII (POZIOMY Z KOŚCI) ---
-# ==========================================
+
 func _on_level_changed(new_level: int):
 	update_level_display()
 	if new_level > 1 and not draw_button.visible:
@@ -525,9 +505,7 @@ func trigger_automatic_level_up() -> void:
 	regular_panel.hide()
 	draw_button.disabled = false
 
-# ==========================================
-# --- 10. PRZYCISKI Z EKRANÓW (UI) ---
-# ==========================================
+
 func _on_restart_button_pressed():
 	GameManager.total_run_levels = 0
 	GameManager.reset_game()

@@ -1,8 +1,8 @@
 extends Control
 
-@onready var label = $ButtonScore        # Wynik rzutu
-@onready var bet_label = $BetButton   # Tu wyświetlamy stawkę
-@onready var dice_button = $Button  # Przycisk "Rzuć"
+@onready var label = $ButtonScore       
+@onready var bet_label = $BetButton  
+@onready var dice_button = $Button  
 @onready var game_over_panel = $GameOverLayer/GameOverPanel
 @onready var roll_sound = $RollSound
 @onready var win_sound = $WinSound
@@ -15,7 +15,7 @@ extends Control
 
 
 
-var current_bet: int = 0             # Nasza aktualna stawka
+var current_bet: int = 0           
 
 func _ready():
 	label.hide()
@@ -30,7 +30,7 @@ func _ready():
 	update_bet_display()
 	update_level_display()
 	
-	# Łączymy żetony pod funkcję
+	
 	if has_node("ChipContener/Chip1"): setup_chip($ChipContener/Chip1, 1)
 	if has_node("ChipContener/Chip2"): setup_chip($ChipContener/Chip2, 5)
 	if has_node("ChipContener/Chip3"): setup_chip($ChipContener/Chip3, 10)
@@ -53,7 +53,7 @@ func update_bet_display():
 	bet_label.text = "Twoja stawka: " + str(current_bet)
 
 
-# --- 1. ODŚWIEŻONA FUNKCJA RZUTU ---
+
 func _on_button_pressed():
 	label.hide()
 	if current_bet <= 0:
@@ -66,50 +66,50 @@ func _on_button_pressed():
 		label.text = "Nie masz tyle pieniędzy!"
 		return
 	
-	# Blokujemy przycisk na czas turlania
+	
 	$Button.disabled = true
 	
 	
 	if roll_sound:
 		roll_sound.play()
 
-	# Odpalamy nasz nowy fizyczny rzut 2D!
+	
 	dice_arena.roll_dices()
 
 
-# --- 2. NOWA FUNKCJA KOŃCOWA ODBIERAJĄCA SYGNAŁ Z KOŚCI ---
+
 func _on_dice_arena_roll_finished(result1: int, result2: int) -> void:
-	# Podliczamy wynik bezpośrednio z sygnału
+	
 	var current_roll_sum = result1 + result2
 	var roll_display = str(current_roll_sum) 
 	label.show()
 	
-	# --- UMIEJĘTNOŚĆ SZULERA (+1 do rzutu) ---
+	
 	if GameManager.player_class == 3:
 		current_roll_sum += 1
 		roll_display += " (+1 Szuler = " + str(current_roll_sum) + ")"
 
-	# --- SPRAWDZANIE WYGRANEJ / PRZEGRANEJ ---
+	
 	if current_roll_sum >= 7: # WYGRANA
 		var win_amount = current_bet
 		var bonus_text = ""
 		
-		# Umiejętność Ryzykanta (20% na podwojenie)
+		
 		if GameManager.player_class == 2:
 			if randf() <= 0.20:
 				win_amount = current_bet * 2
 				bonus_text += "\nRYZYKANT: Podwójna wygrana!!!"
 				
-		# Ulepszenie: Losowy Magnes na kasę (Procentowy)
+		
 		if GameManager.magnet_level > 0:
-			if randf() <= 0.30: # 30% szans na aktywację przy wygranej
-				var magnet_multiplier = GameManager.magnet_level * 0.10 # Max 50%
+			if randf() <= 0.30:
+				var magnet_multiplier = GameManager.magnet_level * 0.10
 				var magnet_bonus = int(current_bet * magnet_multiplier)
 				if magnet_bonus > 0:
 					win_amount += magnet_bonus
 					bonus_text += "\nSKLEP: Magnes przyciągnął bonus +" + str(magnet_bonus) + " monet!"
 		
-		# Wyświetlenie tekstu i dodanie kasy
+		
 		label.text = "Wyrzuciłeś: " + roll_display + ". Wygrałeś " + str(win_amount) + "!" + bonus_text
 		GameManager.add_money(win_amount)
 		
@@ -122,29 +122,25 @@ func _on_dice_arena_roll_finished(result1: int, result2: int) -> void:
 		
 		
 		
-	else: # PRZEGRANA
+	else:
 		label.text = "Wyrzuciłeś: " + roll_display + ". Przegrałeś " + str(current_bet) + "."
 		GameManager.add_money(-current_bet)
 	
-	# --- CZYSZCZENIE PO RZUCIE ---
 	current_bet = 0
 	update_bet_display()
 	$Button.disabled = false
-	
-	# --- SPRAWDZANIE BANKRUCTWA I PUNKTACJA ---
+
 	if GameManager.current_money <= 0:
 		var saved_from_bankruptcy = false
 		
-		# Ulepszenie: Druga Szansa (Max 50% na ratunek)
 		if GameManager.survival_level > 0:
 			var survival_chance = GameManager.survival_level * 0.10
 			if randf() <= survival_chance:
 				saved_from_bankruptcy = true
-				GameManager.current_money = 10 # Zostajemy z 10 monetami
+				GameManager.current_money = 10 
 				label.text += "\nCUDA! Omijasz bankructwo i zostaje 10 monet!"
-				GameManager.money_changed.emit(GameManager.current_money) # Odświeżamy UI z kasą
+				GameManager.money_changed.emit(GameManager.current_money)
 		
-		# Jeśli nikt nas nie uratował - GAME OVER
 		if not saved_from_bankruptcy:
 			var target_money_to_level_up = GameManager.level_requirements[GameManager.current_level]
 			var final_score = GameManager.calculate_score(target_money_to_level_up)

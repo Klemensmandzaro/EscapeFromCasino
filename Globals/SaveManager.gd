@@ -1,15 +1,15 @@
 extends Node
 
 var save_path = "user://kasyno_save.cfg"
+#Całość AI
 
-# Odpalamy wczytywanie automatycznie przy starcie gry
 func _ready():
 	load_game()
 
 func save_game():
 	var config = ConfigFile.new()
 	
-	# Zapisujemy zmienne z GameManagera
+	
 	config.set_value("Sklep", "vip_points", GameManager.vip_points)
 	config.set_value("Sklep", "upgrade_starting_money_level", GameManager.upgrade_starting_money_level)
 	config.set_value("Sklep", "magnet_level", GameManager.magnet_level)
@@ -25,7 +25,6 @@ func load_game():
 	var err = config.load(save_path)
 	
 	if err == OK:
-		# Nadpisujemy zmienne w GameManagerze zapisanymi danymi
 		GameManager.vip_points = config.get_value("Sklep", "vip_points", 50)
 		GameManager.upgrade_starting_money_level = config.get_value("Sklep", "upgrade_starting_money_level", 0)
 		GameManager.magnet_level = config.get_value("Sklep", "magnet_level", 0)
